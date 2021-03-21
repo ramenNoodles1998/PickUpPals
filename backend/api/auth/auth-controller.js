@@ -8,6 +8,7 @@ exports.index = (req, res) => {
     if(!validation.isValid) {
         return res.status(400).json({message: validation.message})
     }
+    console.log(req)
     User.findOne({ username: req.body.username.toLowerCase() }, (error, user) => {
         if(error) {
             return res.status(500).json()

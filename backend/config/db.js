@@ -7,7 +7,7 @@ exports.connectToDB = () => {
     }, 
     error => {
         if(error) {
-            console.log('unable to conncect to database')
+            console.log('unable to connect to database')
             throw error
         } else {
             console.log('connected to database')

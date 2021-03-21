@@ -53,6 +53,7 @@
               v-model="password"
               label="Password"
               required
+              type="password"
             ></v-text-field>
           </v-col>
 
@@ -65,19 +66,31 @@
               v-model="confirmPassword"
               label="Confirm Password"
               required
+              type="password"
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="ml-1">
-            <v-btn class="mr-2" @click="newUser()">Submit</v-btn>
-
-            <v-btn @click="switchPage()">Back to Login</v-btn>
+        <v-row>
+            <v-col
+              cols="12"
+              md="4"
+            >
+              <v-btn class="mr-2" @click="signUpUser()">Sign Up</v-btn>
+            </v-col>
+            <v-col
+              cols="12"
+              md="4"
+            >
+              <v-btn @click="switchPage()">Back to Login</v-btn>
+            </v-col>
         </v-row>
       </v-container>
     </v-form>
 </template>
 
 <script>
+  import * as auth from '../services/AuthService.js'
+
   export default {
     name: 'SignUp',
 
@@ -94,8 +107,18 @@
         this.$emit('switchPage')
       },
 
-      newUser() {
-          this.$router.push('/')
+      async signUpUser() {
+        let user = {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          username: this.username,
+          password: this.password
+        }
+        const registerPromise = auth.registerUser(user)
+        const loginPromise = auth.login(user)
+        await Promise.all([registerPromise, loginPromise])
+
+        this.$router.replace('/')
       }
     }
   }

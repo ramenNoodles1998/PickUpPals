@@ -22,14 +22,25 @@
             <v-text-field
               v-model="password"
               label="Password"
+              type="password"
               required
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="ml-1">
-          <v-btn class="mr-2">Login</v-btn>
-          
-          <v-btn @click="switchPage()">Sign Up</v-btn>
+        <v-row>
+           <v-col
+              cols="12"
+              md="4"
+            >
+              <v-btn class="mr-2" @click="login">Login</v-btn>
+            </v-col>
+
+            <v-col
+              cols="12"
+              md="4"
+            >
+              <v-btn @click="switchPage()">Go To Create Account</v-btn>
+            </v-col>
         </v-row>
       </v-container>
       
@@ -37,17 +48,31 @@
 </template>
 
 <script>
+  import * as auth from '../services/AuthService.js'
+
   export default {
     name: 'Login',
 
     data: () => ({
         username: '',
-        password: ''
+        password: '',
+        valid: true
       }),
 
     methods: {
       switchPage() {
         this.$emit('switchPage')
+      },
+
+      async login() {
+        let user = {
+          username: this.username,
+          password: this.password
+        }
+
+        let response = await auth.login(user)
+        console.log(response)
+        this.$router.replace('/')
       }
     }
   }
