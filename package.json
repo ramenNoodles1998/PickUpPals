@@ -5,10 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service build && aws --profile pick-up-pals-deployer --region us-east-1 s3 sync ./dist s3://pick-up-pals --delete"
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "bcrypt-nodejs": "0.0.3",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",

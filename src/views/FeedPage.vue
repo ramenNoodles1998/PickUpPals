@@ -1,13 +1,12 @@
 <template>
-  <div class="home mt-10">
-    Home Page
-    
+  <div class="mt-10">
+    Feed Page
   </div>
 </template>
 
 <script>
   export default {
-    name: 'Home',
+    name: 'FeedPage',
   }
 </script>
 

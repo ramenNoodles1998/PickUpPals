@@ -69,10 +69,9 @@
           username: this.username,
           password: this.password
         }
-
-        let response = await auth.login(user)
-        console.log(response)
-        this.$router.replace('/')
+        
+        await auth.login(user)
+        this.$router.replace('/feedPage')
       }
     }
   }

@@ -118,7 +118,7 @@
         const loginPromise = auth.login(user)
         await Promise.all([registerPromise, loginPromise])
 
-        this.$router.replace('/')
+        this.$router.replace('/feedPage')
       }
     }
   }
