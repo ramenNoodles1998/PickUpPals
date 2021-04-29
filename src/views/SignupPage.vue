@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="signup-page">
     <v-card
         class="mx-auto my-3 text-center" 
         color="#d3d3d3"
@@ -13,7 +13,7 @@
             width="800"
           >
             <v-card-text>
-              <Login 
+              <Signup 
                 align="center"
                 justify="center"
               />
@@ -25,13 +25,13 @@
 </template>
 
 <script>
-  import Login from '../components/AuthenticationComponents/Login.vue'
+  import Signup from '../components/AuthenticationComponents/Signup.vue'
 
   export default {
-    name: 'LoginPage',
+    name: 'SignupPage',
 
     components: {
-      Login
+      Signup
     }
   }
 </script>

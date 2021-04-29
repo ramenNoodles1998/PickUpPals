@@ -4,7 +4,6 @@ import store from '../store/index'
 import * as auth from './AuthService'
 
 export function http() {
-    console.log(store.state.apiUrl)
     return axios.create({
         baseURL: store.state.apiUrl,
         headers: {
