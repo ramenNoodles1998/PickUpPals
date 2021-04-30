@@ -5,6 +5,7 @@ import LoginPage from '../views/LoginPage.vue'
 import SignupPage from '../views/SignupPage.vue'
 import SubscriptionPage from '../views/SubscriptionPage.vue'
 import FeedPage from '../views/FeedPage.vue'
+import GamesPage from '../views/GamesPage.vue'
 
 import * as auth from '../services/AuthService.js'
 
@@ -34,6 +35,18 @@ const routes = [
     path: '/signupPage',
     name: 'SignupPage',
     component: SignupPage
+  },
+  {
+    path: '/gamesPage',
+    name: 'GamesPage',
+    component: GamesPage,
+    beforeEnter: (to, from, next) => {
+      if(auth.isLoggedIn()) {
+        next()
+      } else {
+        next('/loginPage')
+      }
+    }
   },
   {
     path: '/subPage',

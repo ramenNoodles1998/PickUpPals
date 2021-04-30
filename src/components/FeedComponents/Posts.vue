@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card
-            v-if="posts.length > 0"
+            v-if="userPosts.length > 0"
             class="mx-auto my-3"
             width="800"
             height="810"
@@ -17,17 +17,15 @@
                     color="#d3d3d3"
                 >
                     <div 
-                        v-for="post in posts"
+                        v-for="post in userPosts"
                         :key="post._id"
                     >
-                        <v-list-tile>
-                            <v-list-tile-content>
-                                <Post 
+                        <v-list-item-content>
+                            <Post 
                                 :post="post"
                                 edit-post
                             />
-                            </v-list-tile-content>
-                        </v-list-tile>
+                        </v-list-item-content>
                     </div>
                 </v-list>
             </v-card-text>
@@ -66,7 +64,7 @@
 
 <script>
     import Post from './Post.vue'
-    import { getUserPosts } from '../../services/FeedService.js'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: 'Posts',
@@ -78,13 +76,19 @@
         data: () => ({
             socket: {},
 
-            loading: true,
-            posts: []
+            loading: true
         }),
 
-        async created() {
-            this.posts = await getUserPosts()
-            this.posts = this.posts.data
+        computed: {
+            ...mapState(['userPosts'])
+        },
+
+        created() {
+            this.getUserPosts()
+        },
+
+        methods: {
+            ...mapActions(['getUserPosts'])
         }
     }
 </script>

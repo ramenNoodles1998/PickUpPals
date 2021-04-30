@@ -57,22 +57,20 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     import Post from './Post.vue'
 
     export default {
         name: 'Feed',
 
-        props: {
-            posts: {
-                type: Array,
-                default: () => {
-                    return []
-                }
-            }
-        },
-
         components: {
             Post
+        },
+
+        computed: {
+            ...mapState({
+                posts: 'allPosts'
+            })
         }
     }
 </script>

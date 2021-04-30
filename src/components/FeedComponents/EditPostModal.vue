@@ -38,7 +38,7 @@
                             <v-row>
                                 <!--TODO: change to number up and down -->
                                 <v-text-field
-                                    v-model="post.location"
+                                    v-model="post.address"
                                     label="Address"
                                 ></v-text-field>
                             </v-row>
@@ -88,7 +88,7 @@ import { mapState } from 'vuex'
             description: '',
             sport: '',
             spotsAvailable: 0,
-            location: ''
+            address: ''
         }
     }),
 

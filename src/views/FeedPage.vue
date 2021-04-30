@@ -13,7 +13,7 @@
 
     <div class="d-flex flex-row justify-center">
         <div v-if="onFeedPage">
-          <Feed :posts="posts">
+          <Feed>
             <template v-slot:feed-header>
               <FeedHeader 
                 @your-post-clicked="swithPagePosts"
@@ -52,8 +52,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { getPosts, getSubscriptionPosts } from '../services/FeedService.js'
+import { mapState, mapActions } from 'vuex'
 import io from 'socket.io-client'
 import CreatePostModal from '../components/FeedComponents/CreatePostModal.vue'
 import EditPostModal from '../components/FeedComponents/EditPostModal.vue'
@@ -76,35 +75,28 @@ import Posts from '../components/FeedComponents/Posts.vue'
       socket: {},
       onFeedPage: true,
       openEditPostModal: false,
-      openCreatePostModal: false,
-      posts: []
+      openCreatePostModal: false
     }),
 
     computed: {
-      ...mapState(['userId', 'apiUrl'])
+      ...mapState(['userId', 'apiUrl', 'allPosts'])
     },
 
     created() {
-        this.socket = io(this.apiUrl)
+      this.socket = io(this.apiUrl)
     },
 
     async mounted() {
-      let postPromises = [getPosts(), getSubscriptionPosts()]
-
-      postPromises = await Promise.all(postPromises)
-
-      let filteredPosts = postPromises.map((post) => {
-        return post.data;
-      })
-
-      this.posts = filteredPosts[0].concat(filteredPosts[1])
+      this.getAllPosts()
 
       this.socket.on(`friendPost/${this.userId}`, ({post}) => {
-        this.posts.push(post)
+        this.allPosts.push(post)
       })
     },
 
     methods: {
+      ...mapActions(['getAllPosts']),
+
       sendPost(post) {
         this.openCreatePostModal = false
         this.socket.emit('onPost', { post })

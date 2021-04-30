@@ -18,12 +18,21 @@
         </template>
   
         <v-list>
-          <v-list-item
+          <div 
             v-for="friend in friends"
             :key="friend[0]._id"
           >
-            <v-list-item-title class="green--text">{{ friend[0].username }}</v-list-item-title>
-          </v-list-item>
+            <v-list-item>
+              <v-list-item-title class="green--text">
+                {{ friend[0].username }}
+              </v-list-item-title>
+
+              
+            </v-list-item>
+
+            <v-divider></v-divider>
+
+          </div>
         </v-list>
       </v-menu>
   </div>

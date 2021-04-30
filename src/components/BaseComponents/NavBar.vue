@@ -44,6 +44,15 @@
             </v-btn>
 
             <v-btn 
+                v-if="isLoggedIn && games.length > 0"
+                class="green--text"
+                text
+                @click="goTo('/gamesPage')"
+            >
+                Games
+            </v-btn>
+
+            <v-btn 
                 v-if="isLoggedIn"
                 class="green--text"
                 text
@@ -102,7 +111,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
     import * as auth from '../../services/AuthService.js'
     import AddFriendModal from '../FriendComponents/AddFriendModal.vue'
 
@@ -123,11 +132,18 @@
         computed: {
             ...mapState([
                 'username',
-                'isLoggedIn'
+                'isLoggedIn',
+                'games'
             ])
         },
 
+        mounted() {
+            this.getGames()
+        },
+
         methods: {
+            ...mapActions(['getGames']),
+
             openSuccessToast() {
                 this.snackbarText = 'Successfully added friend.'
                 this.snackbar = true
