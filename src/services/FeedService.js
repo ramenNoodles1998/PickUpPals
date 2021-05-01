@@ -27,3 +27,15 @@ export function getUserPosts() {
 export function getSubscriptionSports() {
     return http().get(`/api/feed/getSubscriptionSports`)
 }
+
+export function getAllPosts() {
+    return http().get(`/api/feed/getAllPosts`)
+}
+
+export function addPendingFriend({ friendId }) {
+    return http().get(`/api/feed/addPendingFriend/${friendId}`)
+}
+
+export function getPendingFriends() {
+    return http().get(`/api/feed/getPendingFriends`)
+}

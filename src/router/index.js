@@ -8,11 +8,11 @@ import FeedPage from '../views/FeedPage.vue'
 import GamesPage from '../views/GamesPage.vue'
 
 import * as auth from '../services/AuthService.js'
+import store from '../store'
 
 Vue.use(VueRouter)
 
 
-//TODO: make it so onlyLoggedInUsers can get to certain paths
 const routes = [
   {
     path: '/',
@@ -41,8 +41,11 @@ const routes = [
     name: 'GamesPage',
     component: GamesPage,
     beforeEnter: (to, from, next) => {
-      if(auth.isLoggedIn()) {
+      if(auth.isLoggedIn() && store.state.games.length > 0) {
         next()
+      } else if (auth.isLoggedIn()){
+        console.log('here')
+        next('/feedPage')
       } else {
         next('/loginPage')
       }

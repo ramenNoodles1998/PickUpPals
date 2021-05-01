@@ -82,7 +82,6 @@ import { mapState } from 'vuex'
     },
 
     data: () => ({
-        socket: {},
         valid: true,
         post: {
             description: '',

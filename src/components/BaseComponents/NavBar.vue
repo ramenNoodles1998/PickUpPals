@@ -1,15 +1,6 @@
 <template>
     <div>
-        <v-snackbar 
-            v-model="snackbar"
-            :color="snackbackColor"
-        >
-            {{ snackbarText }}
-        </v-snackbar>
-
-        <AddFriendModal
-            @success-toast="openSuccessToast"
-            @error-toast="openErrorToast"
+        <SearchFriendModal
             :dialog="openFriendModal"
             @close="openFriendModal = false"
         />
@@ -113,13 +104,13 @@
 <script>
     import { mapState, mapActions } from 'vuex'
     import * as auth from '../../services/AuthService.js'
-    import AddFriendModal from '../FriendComponents/AddFriendModal.vue'
+    import SearchFriendModal from '../FriendComponents/SearchFriendModal'
 
     export default {
         name: 'NavBar',
 
         components: {
-            AddFriendModal
+            SearchFriendModal
         },
 
         data: () => ({
@@ -143,17 +134,6 @@
 
         methods: {
             ...mapActions(['getGames']),
-
-            openSuccessToast() {
-                this.snackbarText = 'Successfully added friend.'
-                this.snackbar = true
-            },
-
-            openErrorToast() {
-                this.snackbarText = 'Error adding friend.'
-                this.snackbar = true
-                this.snackbackColor = 'red'
-            },
 
             logout() {
                 auth.logout()

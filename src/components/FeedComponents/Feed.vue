@@ -16,8 +16,8 @@
                 color="#d3d3d3"
             >
                 <div 
-                    v-for="post in posts"
-                    :key="post._id"
+                    v-for="(post, i) in posts"
+                    :key="i"
                 >
                     <Post :post="post"/>
                 </div>

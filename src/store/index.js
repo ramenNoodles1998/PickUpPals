@@ -2,12 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as auth from '../services/AuthService.js'
 import { findFriends } from '../services/FeedService.js'
-import { getUserPosts, getPosts, getSubscriptionPosts } from '../services/FeedService.js'
+import { getUserPosts, getAllPosts, addPendingFriend, getPendingFriends } from '../services/FeedService.js'
 import { getGames } from '../services/GamesService.js'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     isLoggedIn: false,
     apiUrl: 'http://localhost:8080',
@@ -15,9 +15,11 @@ export default new Vuex.Store({
     username: null,
     userId: null,
     friends: [],
+    pendingFriends: [],
     allPosts: [],
     userPosts: [],
-    games: []
+    games: [],
+    addFriendModal: false
   },
 
   mutations: {
@@ -30,6 +32,40 @@ export default new Vuex.Store({
         state.userId = null
         state.username = null
       }
+    },
+
+    setUserPostData(state, { post }) {
+      state.userPosts = post
+    },
+
+    setPendingFriendsData(state, { pendingFriends }) {
+      state.pendingFriends = pendingFriends
+    },
+
+    setAllPostData(state, { posts }) {
+      state.allPosts = posts
+      state.allPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    },
+
+    setGamesData(state, { games }) {
+      state.games = games
+      state.games.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    },
+
+    setFriends(state, { friends }) {
+      state.friends = friends
+    },
+
+    addNewAllPost(state, { post }) {
+      state.allPosts.unshift(post)
+    },
+
+    addNewGame(state, { game }) {
+      state.games.unshift(game)
+    },
+
+    toggleFriendModal(state, modalBoolean) {
+      state.addFriendModal = modalBoolean
     }
   },
 
@@ -38,38 +74,43 @@ export default new Vuex.Store({
       context.commit('authenticate')
     },
 
-    async findFriends({ state }) {
+    async findFriends({ commit }) {
       let res = await findFriends()
-      state.friends = res.data
+      commit('setFriends', { friends: res.data })
 
-      return state.friends
+      return res.data
     },
 
-    async getAllPosts({ state }) {
-      let postPromises = [getPosts(), getSubscriptionPosts()]
+    async getAllPosts({ commit }) {
+      let posts = await getAllPosts()
 
-      postPromises = await Promise.all(postPromises)
-
-      let filteredPosts = postPromises.map((post) => {
-        return post.data
-      })
-
-      state.allPosts = filteredPosts[0].concat(filteredPosts[1])
+      commit('setAllPostData', { posts: posts.data })
     },
 
-    async getUserPosts({ state }) {
+    async getUserPosts({ commit }) {
       let posts = await getUserPosts()
-      state.userPosts = posts.data
+
+      commit('setUserPostData', { post: posts.data })
     },
 
-    async getGames({ state }) {
+    async getGames({ commit }) {
       let games = await getGames()
-      console.log(games)
-      state.games = games.data
+
+      commit('setGamesData', { games: games.data })
     },
 
-    joinGame({ state }, { post }) {
-      state.games.push(post)
+    async addPendingFriend({ commit }, { friendId }) {
+      let pendingFriends = await addPendingFriend({ friendId })
+
+      commit('setPendingFriendsData', { pendingFriends: pendingFriends.data })
+    },
+
+    async getPendingFriends({ commit }) {
+      let pendingFriends = await getPendingFriends()
+
+      commit('setPendingFriendsData', { pendingFriends: pendingFriends.data })
     }
   }
 })
+
+export default store

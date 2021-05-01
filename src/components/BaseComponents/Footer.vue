@@ -5,7 +5,7 @@
     >
         <v-container fluid>
             <div class="d-flex flex-row-reverse">
-                <FriendList />
+                <FriendList @open-friend-modal="(friend) => $emit('open-friend-modal', friend)"/>
             </div>
 
             <div class="d-flex justify-center ma-3">

@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import io from 'socket.io-client'
 import CreatePostModal from '../components/FeedComponents/CreatePostModal.vue'
 import EditPostModal from '../components/FeedComponents/EditPostModal.vue'
@@ -89,12 +89,19 @@ import Posts from '../components/FeedComponents/Posts.vue'
     async mounted() {
       this.getAllPosts()
 
-      this.socket.on(`friendPost/${this.userId}`, ({post}) => {
-        this.allPosts.push(post)
+      this.socket.on(`friendPost/${this.userId}`, () => {
+        this.getAllPosts()
+      })
+      
+      this.socket.on(`decreaseSpot/${this.userId}`, () => {
+        console.log('decrease spot user')
+        this.getAllPosts()
       })
     },
 
     methods: {
+      ...mapMutations(['addNewAllPost', 'decreasePost']),
+
       ...mapActions(['getAllPosts']),
 
       sendPost(post) {

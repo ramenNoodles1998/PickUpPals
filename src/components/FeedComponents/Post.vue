@@ -114,6 +114,14 @@
       this.socket = io(this.apiUrl)
     },
 
+    mounted() {
+      this.socket.on(`joinedGame/${this.userId}`,async ({ game }) => {
+        await this.getGames()
+        this.$router.push('/gamesPage')
+        this.socket.emit('decreaseSpots', { game })
+      })
+    },
+
     computed: {
       ...mapState(['apiUrl', 'userId']),
 
@@ -129,13 +137,11 @@
     },
 
     methods: {
-      ...mapActions(['joinGame']),
+      ...mapActions(['getGames']),
 
       joinPost() {
         //decrease spots left and add to current games
-        this.joinGame({ post: this.post })
         this.socket.emit('joinGame', { userId: this.userId, post: this.post })
-        this.$router.push('/gamesPage')
       }
     }
   }
