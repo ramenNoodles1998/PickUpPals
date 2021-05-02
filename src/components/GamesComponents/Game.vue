@@ -5,61 +5,82 @@
       max-width="600"
       color="green"
       dark
-      tile
     >
-      <v-list-item>
-          <v-list-item-title class="display-2">
-              <strong>{{ game.creatorUsername }}</strong>
-            </v-list-item-title>
-      </v-list-item>
+
+      <v-card-title>
+        <v-row justify="space-between">
+          <div>
+            <v-icon
+              large
+              left
+            >
+              mdi-soccer
+            </v-icon>
+            <span class="title">PickUpPals</span>
+          </div>
+
+          <v-btn
+            @click="leaveGame"
+            icon
+          >
+            <v-icon
+              medium
+              left
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </v-row>
+      </v-card-title>
+      
+      <v-card-text class="headline font-weight-bold">
+        {{ game.description }}
+      </v-card-text>
+
+      <v-card-text class="subtitle-1">
+        {{ game.sport }} at {{ game.address }} on {{ dateTimeComputed }}
+      </v-card-text>
   
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-title class="display-1">
-              <strong>{{ game.sport }}</strong>
-            </v-list-item-title>
-          <v-list-item-title>{{ game.description }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item>
-            <v-list-item-title>
-                <strong>Address:</strong> 
-                {{ game.address }}
-            </v-list-item-title>
-      </v-list-item>
-
-      <v-list-item>
-          <v-list-item-title>
-              <strong>Number of Spots Left:</strong> 
-              {{ game.spotsAvailable }}
-            </v-list-item-title>
-      </v-list-item>
-
-      <v-list-item>
-          <v-list-item-title>
-              <strong>Game Time:</strong> 
-              {{ dateTimeComputed }}
-            </v-list-item-title>
-      </v-list-item>
-
-    <v-card-actions>
-        <v-spacer></v-spacer>
-        
-        <v-btn
-          class="green--text"
-          color="white"
-          large
-          @click="goToDirections"
+      <v-card-actions>
+        <v-row
+          align="center"
+          justify="end"
         >
-          directions
-        </v-btn>
-    </v-card-actions>
+          <v-col align="left">
+            <v-list-item class="font-weight-bold">
+              <v-list-item-title>
+                {{ game.creatorUsername }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+
+          <v-col>
+            <v-list-item>
+              <v-list-item-title class="font-weight-bold">
+                Spots Left: {{ game.spotsAvailable }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+          
+          <v-col>
+            <v-btn
+              class="green--text"
+              color="white"
+              medium
+              @click="goToDirections"
+            >
+              directions
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: 'Game',
     
@@ -67,7 +88,7 @@
         game: {
           type: Object,
           default: () => {
-              return {}
+            return {}
           }
         },
 
@@ -90,8 +111,14 @@
     },
 
     methods: {
+      ...mapActions(['leaveGameAction']),
+
       goToDirections() {
         window.open(this.googleLink,'_newtab')
+      },
+
+      leaveGame() {
+        this.leaveGameAction({ gameId: this.game._id })
       }
     }
   }

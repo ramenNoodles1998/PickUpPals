@@ -4,18 +4,18 @@
     <div>
         <v-dialog
             v-model="dialog"
-            width="500"
+            width="800"
             @click:outside="$emit('close')"
         >
             <v-card>
                 <v-card-text>
-                      <v-form 
+                    <v-form 
                         v-model="valid"
-                      >
+                    >
                         <v-row>
-                            <v-card width="450" class="my-5">
+                            <v-card width="775" class="my-5">
                                 <v-card-title class="headline green white--text">
-                                    Create Post
+                                    Game Description
                                 </v-card-title>
                             </v-card>
                         </v-row>
@@ -30,6 +30,7 @@
 
                         <v-row>
                             <v-select
+                                class="mr-2"
                                 v-model="post.sport"
                                 label="Sport"
                                 :items="sports"
@@ -37,9 +38,7 @@
                                 item-value="title"
                                 outlined
                             ></v-select>
-                        </v-row> 
-                        
-                        <v-row>
+
                             <v-text-field 
                                 v-model="post.spotsAvailable"
                                 outlined
@@ -50,6 +49,7 @@
 
                         <v-row>
                             <v-menu
+                                class="mr-2"
                                 ref="menuDialog"
                                 v-model="menu"
                                 :close-on-content-click="false"
@@ -76,9 +76,7 @@
                                     @change="save"
                                 ></v-date-picker>
                             </v-menu>
-                        </v-row>
 
-                        <v-row>
                             <v-dialog
                                 ref="timepickerdialog"
                                 v-model="timepicker"
@@ -125,7 +123,7 @@
                         </v-row>
 
                         <v-row class="mb-5">
-                            <v-card width="475">
+                            <v-card width="775">
                                 <v-card-title class="headline green white--text">
                                     Game Location
                                 </v-card-title>
@@ -134,13 +132,12 @@
 
                         <v-row>
                             <v-text-field
+                                class="mr-2"
                                 v-model="post.address"
                                 label="Street Address"
                                 outlined
                             ></v-text-field>
-                        </v-row>
 
-                        <v-row>
                             <v-text-field
                                 v-model="post.city"
                                 label="City"
@@ -150,13 +147,12 @@
 
                         <v-row>
                             <v-text-field
+                                class="mr-2"
                                 v-model="post.state"
                                 label="State"
                                 outlined
                             ></v-text-field>
-                        </v-row>
 
-                        <v-row>
                             <v-text-field
                                 v-model="post.zip"
                                 label="Zip Code"
@@ -172,6 +168,7 @@
                     <v-btn
                         color="green"
                         text
+                        x-large
                         @click="sendPost"
                     >
                         Post
@@ -183,9 +180,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { getSubscriptionSports } from '../../services/FeedService'
-
+    import { mapState } from 'vuex'
+    import { getSubscriptions } from '../../services/SubscriptionService.js'
+ 
   export default {
     name: 'CreatePostModal',
 
@@ -221,8 +218,8 @@ import { getSubscriptionSports } from '../../services/FeedService'
     },
 
     async mounted() {
-        let sports = await getSubscriptionSports()
-        this.sports = sports.data
+        let subscriptions = await getSubscriptions()
+        this.sports = subscriptions.data
     },
 
     watch: {

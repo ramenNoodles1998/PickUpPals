@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import { getFriendsList } from '../../services/FeedService.js'
+    import { getFriendsList } from '../../services/FriendService.js'
     import { mapActions, mapState } from 'vuex'
     import io from 'socket.io-client'
 
@@ -104,23 +104,12 @@
 
 
         methods: {
-        ...mapActions(['findFriends', 'getAllPosts']),
+            ...mapActions(['getFriends', 'getAllPosts']),
 
-    //TODO change addFriend to be a socket and have to be confirmed.
             async addFriend() {
                 if(this.selectedFriend) {
-                    // try {
-                    //    // await addFriend(this.selectedFriend.username)
-                    //     //this.findFriends()
-                    //     //this.getAllPosts()
-                        
-                    //     this.$emit('success-toast')
-                    // } catch(e) {
-                    //     this.$emit('error-toast')
-                    // }
-                    console.log(this.selectedFriend)
-
                     this.socket.emit('sendFriendRequest', {userId: this.userId, friendId: this.selectedFriend._id})
+                    this.$emit('close')
                 }
             }
         }

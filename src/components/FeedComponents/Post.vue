@@ -5,82 +5,111 @@
       max-width="600"
       color="green"
       dark
-      tile
     >
-      <v-list-item>
-          <v-list-item-title class="display-2">
-              <strong>{{ post.creatorUsername }}</strong>
-            </v-list-item-title>
-      </v-list-item>
-  
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-title class="display-1">
-              <strong>{{ post.sport }}</strong>
-            </v-list-item-title>
-          <v-list-item-title>{{ post.description }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
 
-      <v-list-item>
-            <v-list-item-title>
-                <strong>Address:</strong> 
-                {{ post.address }}
-            </v-list-item-title>
-      </v-list-item>
+      <v-card-title>
+        <v-icon
+          large
+          left
+        >
+          mdi-soccer
+        </v-icon>
+        <span class="title">PickUpPals</span>
+      </v-card-title>
+      
+      <v-card-text class="headline font-weight-bold">
+        {{ post.description }}
+      </v-card-text>
 
-      <v-list-item>
-          <v-list-item-title>
-              <strong>Number of Spots Left:</strong> 
-              {{ post.spotsAvailable }}
-            </v-list-item-title>
-      </v-list-item>
-
-      <v-list-item>
-          <v-list-item-title>
-              <strong>Game Time:</strong> 
-              {{ dateTimeComputed }}
-            </v-list-item-title>
-      </v-list-item>
+      <v-card-text class="subtitle-1">
+        {{ post.sport }} at {{ post.address }} on {{ dateTimeComputed }}
+      </v-card-text>
 
       <v-card-actions v-if="editPost">
-        <v-spacer></v-spacer>
+        <v-list-item class="grow">
+          <v-row
+            align="center"
+            justify="end"
+          >
+            <v-col align="left">
+              <v-list-item>
+                <v-list-item-title class="font-weight-bold">
+                  {{ post.creatorUsername }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-col>
 
-        <v-btn
-          color="white"
-          outlined
-          medium
-          fab
-        >
-          <v-icon>
-            mdi-pencil
-          </v-icon>
-        </v-btn>
-        
-        <v-btn
-          color="error"
-          outlined
-          medium
-          fab
-        >
-          <v-icon>
-            mdi-delete
-          </v-icon>
-        </v-btn>
-    </v-card-actions>
+            <v-col>
+              <v-list-item>
+                <v-list-item-title class="font-weight-bold">
+                  Spots Left: {{ post.spotsAvailable }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-col>
 
-    <v-card-actions v-else>
-        <v-spacer></v-spacer>
-        
-        <v-btn
-          class="green--text"
-          color="white"
-          large
-          @click="joinPost"
+            <v-col align="right">
+              <v-btn
+                class="mr-2"
+                color="white"
+                outlined
+                small
+                fab
+                @click="editPost"
+              >
+                <v-icon>
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+
+              <v-btn
+                color="error"
+                outlined
+                small
+                fab
+                @click="deletePost"
+              >
+                <v-icon>
+                  mdi-delete
+                </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-list-item>
+      </v-card-actions>
+
+      <v-card-actions v-else>
+        <v-row
+          align="center"
+          justify="end"
         >
-          join
-        </v-btn>
-    </v-card-actions>
+          <v-col align="left">
+            <v-list-item class="font-weight-bold">
+              <v-list-item-title>
+                {{ post.creatorUsername }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+
+          <v-col>
+            <v-list-item>
+              <v-list-item-title class="font-weight-bold">
+                Spots Left: {{ post.spotsAvailable }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+
+          <v-col align="right">
+            <v-btn
+              class="green--text"
+              color="white"
+              medium
+              @click="joinPost"
+            >
+              join game
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -115,7 +144,7 @@
     },
 
     mounted() {
-      this.socket.on(`joinedGame/${this.userId}`,async ({ game }) => {
+      this.socket.on(`joinedGame/${this.userId}`, async ({ game }) => {
         await this.getGames()
         this.$router.push('/gamesPage')
         this.socket.emit('decreaseSpots', { game })
@@ -127,12 +156,6 @@
 
       dateTimeComputed() {
         return new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(new Date(this.post.dateTime))
-      },
-
-      googleLink() {
-        let address = this.post.address.split(' ')
-
-        return `https://www.google.com/maps?saddr=My+Location&daddr=${address.join('+')}+${this.post.city}+${this.post.state}+${this.post.zip}`
       }
     },
 
@@ -140,7 +163,6 @@
       ...mapActions(['getGames']),
 
       joinPost() {
-        //decrease spots left and add to current games
         this.socket.emit('joinGame', { userId: this.userId, post: this.post })
       }
     }

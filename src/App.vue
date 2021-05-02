@@ -23,6 +23,8 @@
   import Footer from './components/BaseComponents/Footer.vue'
   import NotificationSnackbar from './components/BaseComponents/NotificationSnackbar.vue'
   import AddFriendModal from './components/FriendComponents/AddFriendModal.vue'
+  import { mapActions } from 'vuex'
+
 
   export default {
     name: 'App',
@@ -39,7 +41,15 @@
       friend: {}
     }),
 
+    mounted() {
+      this.getFriends()
+      this.getPendingFriends()
+      this.getSentPendingFriends()
+    },
+
     methods: {
+      ...mapActions(['getFriends', 'getPendingFriends', 'getSentPendingFriends']),
+
       openFriendModal(friend) {
         this.friendModal = true
         this.friend = friend

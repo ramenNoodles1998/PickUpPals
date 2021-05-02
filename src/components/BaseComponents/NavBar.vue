@@ -11,7 +11,16 @@
                 text
                 @click="goTo('/')"
             >
-                PickUpPals
+                <v-icon
+                    large
+                    left
+                >
+                    mdi-soccer
+                </v-icon>
+
+                <span class="title">
+                    PickUpPals
+                </span>
             </v-btn>
 
             <v-spacer></v-spacer>

@@ -164,7 +164,7 @@
       },
 
       switchPage() {
-        this.$router.replace('/LoginPage')
+        this.$router.push('/LoginPage')
       },
 
       async signUpUser() {
@@ -182,7 +182,7 @@
           const loginPromise = auth.login(user)
           await Promise.all([registerPromise, loginPromise])
 
-          this.$router.replace('/feedPage')
+          this.$router.push('/feedPage')
         }
       }
     }

@@ -113,7 +113,7 @@
       },
       
       switchPage() {
-         this.$router.replace('/SignupPage')
+         this.$router.push('/SignupPage')
       },
 
       async login() {
@@ -126,7 +126,7 @@
 
         if(this.valid) {
           await auth.login(user)
-          this.$router.replace('/feedPage')
+          this.$router.push('/feedPage')
         }
       }
     }

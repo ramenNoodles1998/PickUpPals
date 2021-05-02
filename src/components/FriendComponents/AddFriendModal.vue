@@ -11,7 +11,7 @@
             Friend Request
         </v-card-title>
 
-        <v-card-text class="subtitle-1 font-weight-black mt-2">
+        <v-card-text class="body-1 mt-2">
           {{ friend.username}} has sent you a friend request.
         </v-card-text>
 
@@ -20,7 +20,7 @@
             <v-btn
                 color="green"
                 text
-                @click="$emit('accept', post)"
+                @click="sendFriendRequestAdded()"
             >
                 Accept
             </v-btn>
@@ -38,6 +38,9 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+import { mapState, mapActions } from 'vuex'
+
   export default {
     name: 'AddFriendModal',
 
@@ -52,6 +55,27 @@
         default: () => {
           return {}
         }
+      }
+    },
+
+    data: () => ({
+      socket: {}
+    }),
+
+    created() {
+      this.socket = io(this.apiUrl)
+    },
+
+    computed: {
+      ...mapState(['userId', 'apiUrl'])
+    },
+
+    methods: {
+      ...mapActions(['getPendingFriends', 'getFriends']),
+
+      sendFriendRequestAdded() {
+        this.socket.emit('sendFriendRequestAdded', { userId: this.userId, friend: this.friend })
+        this.$emit('close')
       }
     }
   }

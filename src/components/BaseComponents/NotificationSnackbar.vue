@@ -36,16 +36,40 @@
     },
 
     mounted() {
-      this.socket.on(`sendFriendRequest/${this.userId}`, ({ friendId }) => {
+      this.socket.on(`gotFriendRequest/${this.userId}`, () => {
         this.snackbar = true
         this.message = 'You got a friend request.'
+        this.getPendingFriends()
+        this.getFriends()
+        this.getSentPendingFriends()
+      })
 
-        this.addPendingFriend({ friendId })
+      this.socket.on(`friendRequestAccepted/${this.userId}`, ({ loggedInUser }) => {
+        this.snackbar = true
+        this.message = `${loggedInUser.username} has accepted your friend request.`
+        this.getPendingFriends()
+        this.getFriends()
+        this.getSentPendingFriends()
+      })
+
+      
+      this.socket.on(`acceptedRequest/${this.userId}`, () => {
+        this.getSentPendingFriends()
+        this.getPendingFriends()
+        this.getFriends()
+      })
+
+      this.socket.on(`friendRequestSent/${this.userId}`, () => {
+        this.snackbar = true
+        this.message = 'Friend Request Sent.'
+        this.getSentPendingFriends()
+        this.getPendingFriends()
+        this.getFriends()
       })
     },
 
     methods: {
-      ...mapActions(['addPendingFriend'])
+      ...mapActions(['addPendingFriend', 'getFriends', 'getPendingFriends', 'getSentPendingFriends'])
     }
   }
 </script>

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as auth from '../services/AuthService.js'
-import { findFriends } from '../services/FeedService.js'
-import { getUserPosts, getAllPosts, addPendingFriend, getPendingFriends } from '../services/FeedService.js'
-import { getGames } from '../services/GamesService.js'
+import { getFriends, addPendingFriend, getPendingFriends, getSentPendingFriends } from '../services/FriendService.js'
+import { getUserPosts, getAllPosts } from '../services/PostService.js'
+import { getGames, leaveGame } from '../services/GamesService.js'
 
 Vue.use(Vuex)
 
@@ -16,10 +16,10 @@ const store = new Vuex.Store({
     userId: null,
     friends: [],
     pendingFriends: [],
+    sentPendingFriends: [],
     allPosts: [],
     userPosts: [],
-    games: [],
-    addFriendModal: false
+    games: []
   },
 
   mutations: {
@@ -36,10 +36,15 @@ const store = new Vuex.Store({
 
     setUserPostData(state, { post }) {
       state.userPosts = post
+      state.userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     },
 
     setPendingFriendsData(state, { pendingFriends }) {
       state.pendingFriends = pendingFriends
+    },
+
+    setSentPendingFriendsData(state, { sentPendingFriends }) {
+      state.sentPendingFriends = sentPendingFriends
     },
 
     setAllPostData(state, { posts }) {
@@ -64,8 +69,12 @@ const store = new Vuex.Store({
       state.games.unshift(game)
     },
 
-    toggleFriendModal(state, modalBoolean) {
-      state.addFriendModal = modalBoolean
+    removeGame(state, { game }) {
+      let gameIds = state.games.map((game) => {
+        return game._id
+      })
+
+      state.games.splice(gameIds.indexOf(game._id), 1)
     }
   },
 
@@ -74,8 +83,8 @@ const store = new Vuex.Store({
       context.commit('authenticate')
     },
 
-    async findFriends({ commit }) {
-      let res = await findFriends()
+    async getFriends({ commit }) {
+      let res = await getFriends()
       commit('setFriends', { friends: res.data })
 
       return res.data
@@ -109,6 +118,19 @@ const store = new Vuex.Store({
       let pendingFriends = await getPendingFriends()
 
       commit('setPendingFriendsData', { pendingFriends: pendingFriends.data })
+    },
+
+    async getSentPendingFriends({ commit }) {
+      let sentPendingFriends = await getSentPendingFriends()
+
+      commit('setSentPendingFriendsData', { sentPendingFriends: sentPendingFriends.data })
+    },
+
+    async leaveGameAction({ commit }, { gameId }) {
+      console.log(gameId)
+      let game = await leaveGame(gameId)
+     
+      commit('removeGame', {game: game.data})
     }
   }
 })

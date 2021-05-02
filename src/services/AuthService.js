@@ -1,7 +1,7 @@
 import store from '../store'
 import { http } from './HttpService'
 import jwt from 'jsonwebtoken'
-import { findFriends } from './FeedService.js'
+import { getFriends } from './FriendService.js'
 
 export function isLoggedIn() {
     const token = localStorage.getItem('token')
@@ -9,10 +9,10 @@ export function isLoggedIn() {
 }
 
 export function login(user) {
-    findFriends()
-    .then((res) => {
-        store.state.friends = res.data
-    })
+    getFriends()
+        .then((res) => {
+            store.state.friends = res.data
+        })
 
     return http().post('/api/auth', user)
     .then(res => {

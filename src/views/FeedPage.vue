@@ -88,21 +88,24 @@ import Posts from '../components/FeedComponents/Posts.vue'
 
     async mounted() {
       this.getAllPosts()
+      this.getPendingFriends()
+      this.getSentPendingFriends()
+      this.getFriends()
 
       this.socket.on(`friendPost/${this.userId}`, () => {
         this.getAllPosts()
       })
       
       this.socket.on(`decreaseSpot/${this.userId}`, () => {
-        console.log('decrease spot user')
         this.getAllPosts()
+        this.getGames()
       })
     },
 
     methods: {
       ...mapMutations(['addNewAllPost', 'decreasePost']),
 
-      ...mapActions(['getAllPosts']),
+      ...mapActions(['getAllPosts', 'getPendingFriends', 'getSentPendingFriends', 'getFriends', 'getGames']),
 
       sendPost(post) {
         this.openCreatePostModal = false
