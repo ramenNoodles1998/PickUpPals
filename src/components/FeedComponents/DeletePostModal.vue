@@ -8,59 +8,24 @@
             width="500"
             @click:outside="$emit('close')"
         >
-            <v-card>
-                <v-card-title class="headline green white--text">
-                    Edit Post
+            <v-card color="#d3d3d3">
+                <v-card-title class="headline font-weight-light green white--text">
+                    Delete Post
                 </v-card-title>
 
-                <v-card-text>
-                      <v-form 
-                        class="m-3"
-                        v-model="valid"
-                      >
-                            <v-row>
-                                <!--TODO: change to multiline -->
-                                <v-text-field
-                                    v-model="post.description"
-                                    label="Description"
-                                ></v-text-field>
-                            </v-row>
-
-                            <v-row>
-                                <!--TODO: change to select -->
-                                <v-text-field
-                                    v-model="post.sport"
-                                    label="Sport"
-                                ></v-text-field>
-                            </v-row>
-
-                            
-                            <v-row>
-                                <!--TODO: change to number up and down -->
-                                <v-text-field
-                                    v-model="post.address"
-                                    label="Address"
-                                ></v-text-field>
-                            </v-row>
-
-                            <v-row>
-                                <!--TODO: change to number up and down -->
-                                <v-text-field
-                                    v-model="post.spotsAvailable"
-                                    label="Spots Available"
-                                ></v-text-field>
-                            </v-row>
-                    </v-form>
+                <v-card-text class="headline font-weight-light green--text">
+                    Are you sure you want to delete this post?
                 </v-card-text>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
+                        class="font-weight-light"
                         color="green"
                         text
-                        @click="$emit('on-post', post)"
+                        @click="deletePostMethod"
                     >
-                        Post
+                        Confirm
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -69,7 +34,7 @@
 </template>
 
 <script>
-//import { mapState } from 'vuex'
+    import { mapActions } from 'vuex'
 
   export default {
     name: 'DeletePostModal',
@@ -78,6 +43,13 @@
         dialog: {
             type: Boolean,
             default: false
+        },
+
+        deletePost: {
+            type: Object,
+            default: () => {
+                return {}
+            }
         }
     },
 
@@ -88,8 +60,13 @@
     computed: {
     },
 
-    mounted() {
+    methods: {
+        ...mapActions(['deletePostAction']),
 
+        deletePostMethod() {
+            this.deletePostAction({ postId: this.deletePost._id })
+            this.$emit('close')
+        }
     }
   }
 </script>

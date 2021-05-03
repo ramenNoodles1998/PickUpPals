@@ -30,7 +30,7 @@
         >
           <v-list-item
             v-if="friends.length > 0"
-            class="green white--text" 
+            class="green white--text font-weight-light" 
             disabled
           >
               Friends
@@ -44,7 +44,9 @@
 
             <v-list-item @click="selectedFriend(friend, false)">
               <v-list-item-content>
-                <v-list-item-title v-text="friend.username"></v-list-item-title>
+                <v-list-item-title class="font-weight-light">
+                  {{ friend.username }}
+                </v-list-item-title>
               </v-list-item-content>
 
               <v-list-item-icon>
@@ -57,7 +59,7 @@
 
           <v-list-item
             v-if="pendingFriends.length > 0 || sentPendingFriends.length > 0"
-            class="green white--text" 
+            class="green white--text font-weight-light" 
             disabled
           >
             Pending Friends
@@ -71,7 +73,9 @@
 
             <v-list-item @click="selectedFriend(friend, true)">
               <v-list-item-content>
-                <v-list-item-title> {{ friend.username }}</v-list-item-title>
+                <v-list-item-title class="font-weight-light"> 
+                  {{ friend.username }}
+                </v-list-item-title>
               </v-list-item-content>
                             
               <v-list-item-icon>
@@ -90,7 +94,9 @@
 
             <v-list-item @click="selectedFriend(friend, false)">
               <v-list-item-content>
-                <v-list-item-title v-text="friend.username"></v-list-item-title>
+                <v-list-item-title v-text="friend.username" class="font-weight-light">
+                  {{ friend.username }}
+                </v-list-item-title>
               </v-list-item-content>
 
               <v-list-item-icon>
@@ -143,9 +149,12 @@
         if (isPending) {
           //open modal to accept friend request
           this.$emit('open-friend-modal', friend)
-        } else {
+        } else if (this.$route.params.accountId !== friend._id) {
           //redirect to account page of person
-          this.$router.push('/account')
+          this.$router.push({
+            path: `/accountPage/${friend._id}`, 
+            params: { account: friend }
+          })
         }
       }
     }

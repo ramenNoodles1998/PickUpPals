@@ -15,3 +15,15 @@ export function getUserPosts() {
 export function getAllPosts() {
     return http().get(`/api/post/getAllPosts`)
 }
+
+export function deletePost({ postId }) {
+    return http().delete(`/api/post/deletePost/${postId}`)
+}
+
+export function editPost({ post }) {
+    return http().get(`/api/post/editPost`, {
+       params: {
+           post
+        }
+    })
+}

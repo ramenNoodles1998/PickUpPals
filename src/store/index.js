@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as auth from '../services/AuthService.js'
 import { getFriends, addPendingFriend, getPendingFriends, getSentPendingFriends } from '../services/FriendService.js'
-import { getUserPosts, getAllPosts } from '../services/PostService.js'
+import { getUserPosts, getAllPosts, deletePost, editPost } from '../services/PostService.js'
 import { getGames, leaveGame } from '../services/GamesService.js'
+import { editAccount } from '../services/AccountService.js'
 
 Vue.use(Vuex)
 
@@ -39,6 +40,11 @@ const store = new Vuex.Store({
       state.userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     },
 
+    setUserData(state, { user }) {
+      state.username = user.username
+      state.userId = user._id
+    },
+
     setPendingFriendsData(state, { pendingFriends }) {
       state.pendingFriends = pendingFriends
     },
@@ -68,13 +74,29 @@ const store = new Vuex.Store({
     addNewGame(state, { game }) {
       state.games.unshift(game)
     },
-
+    
     removeGame(state, { game }) {
       let gameIds = state.games.map((game) => {
         return game._id
       })
 
       state.games.splice(gameIds.indexOf(game._id), 1)
+    },
+
+    removeUserPost(state, { post }) {
+      let postIds = state.userPosts.map((post) => {
+        return post._id
+      })
+
+      state.userPosts.splice(postIds.indexOf(post._id), 1)
+    },
+
+    editUserPost(state, { post }) {
+      let postIds = state.userPosts.map((post) => {
+        return post._id
+      })
+
+      state.userPosts.splice(postIds.indexOf(post._id), 1, post)
     }
   },
 
@@ -127,10 +149,27 @@ const store = new Vuex.Store({
     },
 
     async leaveGameAction({ commit }, { gameId }) {
-      console.log(gameId)
       let game = await leaveGame(gameId)
      
       commit('removeGame', {game: game.data})
+    },
+
+    async deletePostAction({ commit }, { postId }) {
+      let post = await deletePost({ postId })
+
+      commit('removeUserPost', { post: post.data })
+    },
+
+    async editPostActions({ commit }, { post }) {
+      let postData = await editPost({ post })
+
+      commit('editUserPost', { post: postData.data })
+    },
+
+    async editAccountAction({ commit }, { user }) {
+      let userData = await editAccount({ user })
+
+      commit('setUserData', { user: userData.data })
     }
   }
 })

@@ -6,9 +6,8 @@ import SignupPage from '../views/SignupPage.vue'
 import SubscriptionPage from '../views/SubscriptionPage.vue'
 import FeedPage from '../views/FeedPage.vue'
 import GamesPage from '../views/GamesPage.vue'
-
+import AccountPage from '../views/AccountPage.vue'
 import * as auth from '../services/AuthService.js'
-import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -41,10 +40,9 @@ const routes = [
     name: 'GamesPage',
     component: GamesPage,
     beforeEnter: (to, from, next) => {
-      if(auth.isLoggedIn() && store.state.games.length > 0) {
+      if(auth.isLoggedIn()) {
         next()
       } else if (auth.isLoggedIn()){
-        console.log('here')
         next('/feedPage')
       } else {
         next('/loginPage')
@@ -67,6 +65,18 @@ const routes = [
     path: '/feedPage',
     name: 'FeedPage',
     component: FeedPage,
+    beforeEnter: (to, from, next) => {
+      if(auth.isLoggedIn()) {
+        next()
+      } else {
+        next('/loginPage')
+      }
+    }
+  },
+  {
+    path: '/accountPage/:accountId',
+    name: 'AccountPage',
+    component: AccountPage,
     beforeEnter: (to, from, next) => {
       if(auth.isLoggedIn()) {
         next()

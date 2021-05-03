@@ -14,14 +14,14 @@
         >
           mdi-soccer
         </v-icon>
-        <span class="title">PickUpPals</span>
+        <span class="title font-weight-light">PickUpPals</span>
       </v-card-title>
       
-      <v-card-text class="headline font-weight-bold">
+      <v-card-text class="headline font-weight-light">
         {{ post.description }}
       </v-card-text>
 
-      <v-card-text class="subtitle-1">
+      <v-card-text class="subtitle-1 font-weight-light">
         {{ post.sport }} at {{ post.address }} on {{ dateTimeComputed }}
       </v-card-text>
 
@@ -33,7 +33,7 @@
           >
             <v-col align="left">
               <v-list-item>
-                <v-list-item-title class="font-weight-bold">
+                <v-list-item-title class="font-weight-light">
                   {{ post.creatorUsername }}
                 </v-list-item-title>
               </v-list-item>
@@ -41,7 +41,7 @@
 
             <v-col>
               <v-list-item>
-                <v-list-item-title class="font-weight-bold">
+                <v-list-item-title class="font-weight-light">
                   Spots Left: {{ post.spotsAvailable }}
                 </v-list-item-title>
               </v-list-item>
@@ -54,7 +54,7 @@
                 outlined
                 small
                 fab
-                @click="editPost"
+                @click="editPostMethod"
               >
                 <v-icon>
                   mdi-pencil
@@ -83,7 +83,7 @@
           justify="end"
         >
           <v-col align="left">
-            <v-list-item class="font-weight-bold">
+            <v-list-item class="font-weight-light">
               <v-list-item-title>
                 {{ post.creatorUsername }}
               </v-list-item-title>
@@ -92,7 +92,7 @@
 
           <v-col>
             <v-list-item>
-              <v-list-item-title class="font-weight-bold">
+              <v-list-item-title class="font-weight-light">
                 Spots Left: {{ post.spotsAvailable }}
               </v-list-item-title>
             </v-list-item>
@@ -100,7 +100,7 @@
 
           <v-col align="right">
             <v-btn
-              class="green--text"
+              class="green--text font-weight-light"
               color="white"
               medium
               @click="joinPost"
@@ -164,6 +164,14 @@
 
       joinPost() {
         this.socket.emit('joinGame', { userId: this.userId, post: this.post })
+      },
+
+      deletePost() {
+        this.$emit('delete-post', this.post)
+      },
+
+      editPostMethod() {
+        this.$emit('edit-post', this.post)
       }
     }
   }

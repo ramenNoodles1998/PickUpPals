@@ -7,8 +7,18 @@
             color="#d3d3d3"
             tile
         >
-            <!-- Header about games info -->
-            
+             <v-toolbar 
+                class="d-flex justify-center"
+                color="green"
+                dark
+            >
+                <v-toolbar-items>
+                    <v-btn text>
+                       Your Current Games
+                    </v-btn>
+                </v-toolbar-items>
+            </v-toolbar>
+
             <v-list
                 max-height="650"
                 class="overflow-y-auto"

@@ -18,7 +18,7 @@
                     mdi-soccer
                 </v-icon>
 
-                <span class="title">
+                <span class="title font-weight-light">
                     PickUpPals
                 </span>
             </v-btn>
@@ -45,7 +45,7 @@
 
             <v-btn 
                 v-if="isLoggedIn && games.length > 0"
-                class="green--text"
+                class="green--text font-weight-light"
                 text
                 @click="goTo('/gamesPage')"
             >
@@ -54,7 +54,7 @@
 
             <v-btn 
                 v-if="isLoggedIn"
-                class="green--text"
+                class="green--text font-weight-light"
                 text
                 @click="goTo('/subPage')"
             >
@@ -63,7 +63,7 @@
 
             <v-btn 
                 v-if="!isLoggedIn"
-                class="green--text"
+                class="green--text font-weight-light"
                 text
                 @click="goTo('/loginPage')"
             >
@@ -77,6 +77,7 @@
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
+                            class="font-weight-light"
                             text
                             v-bind="attrs"
                             v-on="on"
@@ -86,20 +87,20 @@
                     </template>
 
                     <v-list>
-                        <v-list-item @click="goTo('/account')">
-                            <v-list-item-title>
+                        <v-list-item @click="goTo({path: `/accountPage/${userId}`, params: {accountId: userId}})">
+                            <v-list-item-title class="font-weight-light">
                                 Profile
                             </v-list-item-title>
                         </v-list-item>
 
                         <v-list-item @click="openFriendModal = true">
-                            <v-list-item-title>
+                            <v-list-item-title class="font-weight-light">
                                 Add Friend
                             </v-list-item-title>
                         </v-list-item>
 
                         <v-list-item @click="logout">
-                            <v-list-item-title>
+                            <v-list-item-title class="font-weight-light">
                                 Logout
                             </v-list-item-title>
                         </v-list-item>
@@ -133,7 +134,8 @@
             ...mapState([
                 'username',
                 'isLoggedIn',
-                'games'
+                'games',
+                'userId'
             ])
         },
 

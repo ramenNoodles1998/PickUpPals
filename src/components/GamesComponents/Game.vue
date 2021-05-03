@@ -16,7 +16,7 @@
             >
               mdi-soccer
             </v-icon>
-            <span class="title">PickUpPals</span>
+            <span class="title font-weight-light">PickUpPals</span>
           </div>
 
           <v-btn
@@ -33,11 +33,11 @@
         </v-row>
       </v-card-title>
       
-      <v-card-text class="headline font-weight-bold">
+      <v-card-text class="headline font-weight-light">
         {{ game.description }}
       </v-card-text>
 
-      <v-card-text class="subtitle-1">
+      <v-card-text class="subtitle-1 font-weight-light">
         {{ game.sport }} at {{ game.address }} on {{ dateTimeComputed }}
       </v-card-text>
   
@@ -47,7 +47,7 @@
           justify="end"
         >
           <v-col align="left">
-            <v-list-item class="font-weight-bold">
+            <v-list-item class="font-weight-light">
               <v-list-item-title>
                 {{ game.creatorUsername }}
               </v-list-item-title>
@@ -56,7 +56,7 @@
 
           <v-col>
             <v-list-item>
-              <v-list-item-title class="font-weight-bold">
+              <v-list-item-title class="font-weight-light">
                 Spots Left: {{ game.spotsAvailable }}
               </v-list-item-title>
             </v-list-item>
@@ -64,7 +64,7 @@
           
           <v-col>
             <v-btn
-              class="green--text"
+              class="green--text font-weight-light"
               color="white"
               medium
               @click="goToDirections"
