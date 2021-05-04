@@ -2,7 +2,7 @@
   <div>
     <v-card
       class="mx-auto my-3"
-      max-width="600"
+      width="600"
       color="green"
       dark
     >
@@ -25,29 +25,45 @@
         {{ post.sport }} at {{ post.address }} on {{ dateTimeComputed }}
       </v-card-text>
 
-      <v-card-actions v-if="editPost">
-        <v-list-item class="grow">
-          <v-row
-            align="center"
-            justify="end"
+      <v-card-actions>
+        <v-row
+          align="center"
+          justify="end"
+        >
+          <v-col align="left">
+            <v-list-item class="font-weight-light">
+              <v-list-item-title>
+                {{ post.creatorUsername }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+
+          <v-col>
+            <v-list-item>
+              <v-list-item-title class="font-weight-light">
+                Spots Left: {{ post.spotsAvailable }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-col>
+
+          <v-col 
+            v-if="!editPost && !profile"
+            align="right"
           >
-            <v-col align="left">
-              <v-list-item>
-                <v-list-item-title class="font-weight-light">
-                  {{ post.creatorUsername }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-col>
+            <v-btn
+              class="green--text font-weight-light"
+              color="white"
+              medium
+              @click="joinPost"
+            >
+              join game
+            </v-btn>
+          </v-col>
 
-            <v-col>
-              <v-list-item>
-                <v-list-item-title class="font-weight-light">
-                  Spots Left: {{ post.spotsAvailable }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-col>
-
-            <v-col align="right">
+          <v-col 
+            v-else-if="!profile"
+            align="right"
+          >
               <v-btn
                 class="mr-2"
                 color="white"
@@ -73,41 +89,6 @@
                 </v-icon>
               </v-btn>
             </v-col>
-          </v-row>
-        </v-list-item>
-      </v-card-actions>
-
-      <v-card-actions v-else>
-        <v-row
-          align="center"
-          justify="end"
-        >
-          <v-col align="left">
-            <v-list-item class="font-weight-light">
-              <v-list-item-title>
-                {{ post.creatorUsername }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-col>
-
-          <v-col>
-            <v-list-item>
-              <v-list-item-title class="font-weight-light">
-                Spots Left: {{ post.spotsAvailable }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-col>
-
-          <v-col align="right">
-            <v-btn
-              class="green--text font-weight-light"
-              color="white"
-              medium
-              @click="joinPost"
-            >
-              join game
-            </v-btn>
-          </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -130,6 +111,11 @@
         },
 
         editPost: {
+          type: Boolean,
+          default: false
+        },
+
+        profile: {
           type: Boolean,
           default: false
         }

@@ -62,11 +62,11 @@
                 </v-card-title>
 
                 <v-card-title>
-                    <span class="font-weight-light green--text">{{ account.friends && account.friends.length }} friend{{ account.friends && (account.friends.length > 1) ? 's' : ''}}</span>
+                    <span class="font-weight-light green--text">{{ account.friends && account.friends.length }} friend{{ account.friends && (account.friends.length === 1) ? 's' : ''}}</span>
                 </v-card-title>
 
                 <v-card-title>
-                    <span class="font-weight-light green--text">{{ account.currentGames && account.currentGames.length }} game{{ account.currentGames && (account.currentGames.length > 1 ) ? 's' : ''}}</span>
+                    <span class="font-weight-light green--text">{{ account.currentGames && account.currentGames.length }} game{{ account.currentGames && (account.currentGames.length === 1 ) ? 's' : ''}}</span>
                 </v-card-title>
             </v-row>
 
@@ -116,7 +116,7 @@
                 >
                     <Post 
                         :post="post" 
-                        :edit-post="profile"
+                        :profile="profile"
                     />
                 </v-row>
             </div>
@@ -176,10 +176,14 @@
 
                 if (this.account._id === this.userId) {
                     this.profile = true
+                } else {
+                    this.profile = false
                 }
 
                 if ((this.account.recentGames.length) > 0 && !(this.account.recentPosts.length > 0)) {
                     this.recentPostPage = false
+                } else {
+                    this.recentPostPage = true
                 }
             }
         },
@@ -192,10 +196,14 @@
 
                 if (vm.account._id === vm.userId) {
                     vm.profile = true
+                } else {
+                    vm.profile = false
                 }
 
                 if ((vm.account.recentGames.length > 0) && !(vm.account.recentPosts.length > 0)) {
                     vm.recentPostPage = false
+                } else {
+                    vm.recentPostPage = true
                 }
             })
         }

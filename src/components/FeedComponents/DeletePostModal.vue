@@ -9,11 +9,11 @@
             @click:outside="$emit('close')"
         >
             <v-card>
-                <v-card-title class="headline font-weight-light green white--text">
+                <v-card-title class="headline font-weight-light green white--text mb-3">
                     Delete Post
                 </v-card-title>
 
-                <v-card-text class="body-1 font-weight-light green--text">
+                <v-card-text class="body-1 font-weight-bold mt-3">
                     Are you sure you want to delete this post?
                 </v-card-text>
 
@@ -21,11 +21,20 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         class="font-weight-light"
-                        color="green"
+                        color="red"
                         text
                         @click="deletePostMethod"
                     >
                         Confirm
+                    </v-btn>
+
+                    <v-btn
+                        class="font-weight-light"
+                        color="green"
+                        text
+                        @click="$emit('close')"
+                    >
+                        Close
                     </v-btn>
                 </v-card-actions>
             </v-card>

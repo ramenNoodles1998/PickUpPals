@@ -11,8 +11,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     isLoggedIn: false,
-    apiUrl: 'http://localhost:8080',
-    //apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
+    //apiUrl: 'http://localhost:8080',
+    apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
     username: null,
     userId: null,
     friends: [],
@@ -27,9 +27,8 @@ const store = new Vuex.Store({
     resetState(state) {
       Object.assign(state, {
         isLoggedIn: false,
-        apiUrl: 'http://localhost:8080',
-        socket: {},
-        //apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
+       // apiUrl: 'http://localhost:8080',
+        apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
         username: null,
         userId: null,
         friends: [],

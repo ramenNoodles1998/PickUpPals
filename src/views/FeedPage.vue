@@ -91,21 +91,18 @@ import Posts from '../components/FeedComponents/Posts.vue'
       this.getUserPosts()
       this.getFriends()
       this.getGames()
-
     },
 
-    watch: {
-      userId(newId) {
-        this.socket.on(`friendPost/${newId}`, () => {
-          this.getAllPosts()
-        })
-        
-        this.socket.on(`updateFeed/${newId}`, () => {
-          this.getAllPosts()
-          this.getGames()
-          this.getUserPosts()
-        })
-      }
+    mounted() {
+      this.socket.on(`friendPost/${this.userId}`, () => {
+        this.getAllPosts()
+      })
+      
+      this.socket.on(`updateFeed/${this.userId}`, () => {
+        this.getAllPosts()
+        this.getGames()
+        this.getUserPosts()
+      })
     },
 
     methods: {

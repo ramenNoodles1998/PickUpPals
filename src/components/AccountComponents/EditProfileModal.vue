@@ -30,7 +30,6 @@
                             >
                                 <v-text-field
                                 v-model="profile.username"
-                                :rules="usernameRules"
                                 label="Username"
                                 ></v-text-field>
                             </v-col>
@@ -73,7 +72,6 @@
                                 <v-text-field
                                     v-model="password"
                                     label="Password"
-                                    :rules="passwordRules"
                                     type="password"
                                 ></v-text-field>
                             </v-col>
@@ -85,7 +83,7 @@
                                 <v-text-field
                                     v-model="confirmPassword"
                                     label="Confirm Password"
-                                    :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+                                    :rules="passwordConfirmationRule"
                                     type="password"
                                 ></v-text-field>
                             </v-col>
@@ -135,22 +133,10 @@
             valid: false,
 
             nameRules: [
-                v => !!v || 'Name is required',
                 v => (v && v.length <= 10) || 'Name must be less than 10 characters',
             ],
-            usernameRules: [
-                v => !!v || 'Username is required'
-            ],
-
             password: '',
-            passwordRules: [
-                v => !!v || 'Password is required'
-            ],
-
-            confirmPassword: '',
-            confirmPasswordRules: [
-                v => !!v || 'Confirm password is required'
-            ]
+            confirmPassword: ''
         }),
         
         computed: {

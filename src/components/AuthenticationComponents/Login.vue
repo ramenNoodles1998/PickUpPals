@@ -51,8 +51,11 @@
                   class="mr-2" 
                   color="green"
                   text
+                  :loading="loading"
                   @click="login"
-                >Login</v-btn>
+                >
+                  Login
+                </v-btn>
               </v-col>
 
               <v-col
@@ -97,6 +100,8 @@
 
     data: () => ({
         valid: false,
+        loading: false,
+
         username: '',
         usernameRules: [
           v => !!v || 'Username is required'
@@ -117,6 +122,7 @@
       },
 
       async login() {
+        this.loading = true
         let user = {
           username: this.username,
           password: this.password
@@ -125,8 +131,13 @@
         this.validate()
 
         if(this.valid) {
-          await auth.login(user)
-          this.$router.push('/feedPage')
+          try {
+            await auth.login(user)
+            this.$router.push('/feedPage')
+            this.loading = false
+          } catch {
+            this.loading = false
+          }
         }
       }
     }

@@ -8,7 +8,7 @@
             @click:outside="$emit('close')"
         >
             <v-card>
-                <v-card-title class="headline grey lighten-2">
+                <v-card-title class="headline font-weight-light green white--text">
                     Add Friend
                 </v-card-title>
 

@@ -54,29 +54,33 @@
           this.message = `${userFriend.username} Has Accepted Your Friend Request.`
           this.getFriends()
           this.getSentPendingFriends()
+          this.getAllPosts()
         })
 
         this.socket.on(`acceptedRequest/${newId}`, () => {
           this.getFriends()
           this.getPendingFriends()
+          this.getAllPosts()
         })
 
         this.socket.on(`friendRequestSent/${newId}`, () => {
           this.snackbar = true
           this.message = 'Friend Request Sent.'
+          this.getFriends()
           this.getSentPendingFriends()
         })
 
         this.socket.on(`gotFriendRequest/${newId}`, () => {
           this.snackbar = true
           this.message = 'You Got A Friend Request.'
+          this.getFriends()
           this.getPendingFriends()
         })
       }
     },
 
     methods: {
-      ...mapActions(['addPendingFriend', 'getFriends', 'getPendingFriends', 'getSentPendingFriends'])
+      ...mapActions(['addPendingFriend', 'getFriends', 'getPendingFriends', 'getSentPendingFriends', 'getAllPosts'])
     }
   }
 </script>

@@ -81,7 +81,7 @@
 
 <script>
   import * as sub from '../services/SubscriptionService.js'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
 
   export default {
     name: 'SubscriptionPage',
@@ -106,13 +106,15 @@
     },
 
     methods: {
+      ...mapActions(['getAllPosts']),
+
       async addSubscription() {
         if (this.userSubscriptions.filter(s => s._id === this.selectedSubscription.item._id).length === 0) {
           await sub.addUserSubscription(this.userId, this.selectedSubscription.item._id)
           let subscriptions = await sub.getSubscriptions()
           this.subscriptions = subscriptions.data
           this.userSubscriptions.push(this.selectedSubscription.item)
-          
+          this.getAllPosts()
         }
       },
 
@@ -121,6 +123,7 @@
         this.userSubscriptions.splice(this.userSubscriptions.indexOf(subscriptionId), 1)
         let subscriptions = await sub.getSubscriptions()
         this.subscriptions = subscriptions.data
+        this.getAllPosts()
       }
     },
 

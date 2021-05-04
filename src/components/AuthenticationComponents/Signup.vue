@@ -91,8 +91,11 @@
                 class="mr-2"
                 color="green"
                 text
+                :loading="loading"
                 @click="signUpUser()"
-               >Sign Up</v-btn>
+              >
+                Sign Up
+              </v-btn>
             </v-col>
             <v-col
               cols="12"
@@ -131,6 +134,8 @@
 
     data: () => ({
       valid: false,
+      loading: false,
+
       firstname: '',
       lastname: '',
       nameRules: [
@@ -168,6 +173,7 @@
       },
 
       async signUpUser() {
+        this.loading = true
         let user = {
           firstname: this.firstname,
           lastname: this.lastname,
@@ -178,10 +184,14 @@
         this.validate()
 
         if(this.valid) {
-          await auth.registerUser(user)
-          await auth.login(user)
-
-          this.$router.push('/feedPage')
+          try {
+            await auth.registerUser(user)
+            await auth.login(user)
+            this.loading = false
+            this.$router.push('/feedPage')
+          } catch {
+            this.loading = false
+          }
         }
       }
     }

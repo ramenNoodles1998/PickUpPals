@@ -7,11 +7,11 @@
       @click:outside="$emit('close')"
     >
       <v-card>
-        <v-card-title class="headline green font-weight-light white--text">
-            Friend Request
+        <v-card-title class="headline font-weight-light green white--text mb-3">
+          Friend Request
         </v-card-title>
 
-        <v-card-text class="body-1 font-weight-light mt-2">
+        <v-card-text class="body-1 font-weight-bold mt-3">
           {{ friend.username}} has sent you a friend request.
         </v-card-text>
 

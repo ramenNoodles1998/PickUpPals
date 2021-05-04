@@ -2,7 +2,7 @@
   <div>
     <v-card
       class="mx-auto my-3"
-      max-width="600"
+      width="600"
       color="green"
       dark
     >
