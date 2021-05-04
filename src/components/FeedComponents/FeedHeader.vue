@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- TODO: change text-color of chosen -->
         <v-toolbar 
             class="d-flex justify-center"
             color="green"

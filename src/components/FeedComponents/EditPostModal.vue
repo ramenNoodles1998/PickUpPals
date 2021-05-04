@@ -182,7 +182,7 @@
 <script>
     import { mapActions, mapState } from 'vuex'
     import { getSubscriptions } from '../../services/SubscriptionService.js'
-
+    import io from 'socket.io-client'
 
   export default {
     name: 'EditPostModal',
@@ -202,6 +202,7 @@
     },
 
     data: () => ({
+        socket: {},
         valid: true,
 
         sports: [],
@@ -211,7 +212,11 @@
     }),
 
     computed: {
-        ...mapState(['userId', 'username'])
+        ...mapState(['userId', 'username', 'apiUrl'])
+    },
+
+    created() {
+      this.socket = io(this.apiUrl)
     },
 
     async mounted() {
@@ -252,6 +257,7 @@
                 }
 
             })
+            this.socket.emit('sendUpdateFeed', { post: this.post} )
 
             this.$emit('close')
         },

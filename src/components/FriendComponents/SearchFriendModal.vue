@@ -68,7 +68,7 @@
         }),
 
         created() {
-        this.socket = io(this.apiUrl)
+            this.socket = io(this.apiUrl)
         },
 
         computed: {
@@ -104,12 +104,13 @@
 
 
         methods: {
-            ...mapActions(['getFriends', 'getAllPosts']),
+            ...mapActions(['getFriends', 'getAllPosts', 'getSentPendingFriends']),
 
             async addFriend() {
                 if(this.selectedFriend) {
                     this.socket.emit('sendFriendRequest', {userId: this.userId, friendId: this.selectedFriend._id})
                     this.$emit('close')
+                    this.getSentPendingFriends()
                 }
             }
         }

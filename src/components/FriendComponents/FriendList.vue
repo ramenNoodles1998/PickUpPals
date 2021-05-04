@@ -2,7 +2,6 @@
   <div>
     <v-menu
       v-if="(friends && friends.length > 0) || (pendingFriends && pendingFriends.length > 0) || (sentPendingFriends && sentPendingFriends.length > 0)"
-      open-on-hover
       top
       rounded
       offset-y

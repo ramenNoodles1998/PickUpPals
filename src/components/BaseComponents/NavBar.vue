@@ -135,7 +135,8 @@
                 'username',
                 'isLoggedIn',
                 'games',
-                'userId'
+                'userId',
+                'apiUrl'
             ])
         },
 

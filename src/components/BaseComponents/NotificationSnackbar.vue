@@ -22,50 +22,57 @@
     name: 'NotificationSnackBar',
 
     data: () => ({
-      socket: {},
+     socket: {},
       snackbar: false,
       message: '',
     }),
-
-    created() {
-      this.socket = io(this.apiUrl)
-    },
 
     computed: {
       ...mapState(['apiUrl', 'userId', 'friends'])
     },
 
-    mounted() {
-      this.socket.on(`gotFriendRequest/${this.userId}`, () => {
-        this.snackbar = true
-        this.message = 'You got a friend request.'
-        this.getPendingFriends()
-        this.getFriends()
-        this.getSentPendingFriends()
-      })
+    created() {
+      this.socket = io(this.apiUrl)
+    },
 
-      this.socket.on(`friendRequestAccepted/${this.userId}`, ({ loggedInUser }) => {
-        this.snackbar = true
-        this.message = `${loggedInUser.username} has accepted your friend request.`
-        this.getPendingFriends()
-        this.getFriends()
-        this.getSentPendingFriends()
-      })
+    watch: {
+      userId(newId) {
+        this.socket.on(`friendRequestDeclined/${newId}`, ({ userFriend }) => {
+          this.snackbar = true
+          this.message = `${userFriend.username} Has Declined Your Friend Request.`
+          this.getFriends()
+          this.getSentPendingFriends()
+        })
+              
+        this.socket.on(`declinedRequest/${newId}`, () => {
+          this.getFriends()
+          this.getPendingFriends()
+        })
 
-      
-      this.socket.on(`acceptedRequest/${this.userId}`, () => {
-        this.getSentPendingFriends()
-        this.getPendingFriends()
-        this.getFriends()
-      })
+        this.socket.on(`friendRequestAccepted/${newId}`, ({ userFriend }) => {
+          this.snackbar = true
+          this.message = `${userFriend.username} Has Accepted Your Friend Request.`
+          this.getFriends()
+          this.getSentPendingFriends()
+        })
 
-      this.socket.on(`friendRequestSent/${this.userId}`, () => {
-        this.snackbar = true
-        this.message = 'Friend Request Sent.'
-        this.getSentPendingFriends()
-        this.getPendingFriends()
-        this.getFriends()
-      })
+        this.socket.on(`acceptedRequest/${newId}`, () => {
+          this.getFriends()
+          this.getPendingFriends()
+        })
+
+        this.socket.on(`friendRequestSent/${newId}`, () => {
+          this.snackbar = true
+          this.message = 'Friend Request Sent.'
+          this.getSentPendingFriends()
+        })
+
+        this.socket.on(`gotFriendRequest/${newId}`, () => {
+          this.snackbar = true
+          this.message = 'You Got A Friend Request.'
+          this.getPendingFriends()
+        })
+      }
     },
 
     methods: {

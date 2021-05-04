@@ -122,7 +122,6 @@
 
             openEditPostModal(post) {
                 this.editPost = post
-
                 this.editPostModal = true
             }
         }

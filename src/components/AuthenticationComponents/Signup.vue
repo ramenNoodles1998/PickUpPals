@@ -178,9 +178,8 @@
         this.validate()
 
         if(this.valid) {
-          const registerPromise = auth.registerUser(user)
-          const loginPromise = auth.login(user)
-          await Promise.all([registerPromise, loginPromise])
+          await auth.registerUser(user)
+          await auth.login(user)
 
           this.$router.push('/feedPage')
         }

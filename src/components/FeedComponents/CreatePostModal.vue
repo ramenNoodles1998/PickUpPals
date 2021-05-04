@@ -181,7 +181,7 @@
 
 <script>
     import { mapState } from 'vuex'
-    import { getSubscriptions } from '../../services/SubscriptionService.js'
+    import { getAllSubscriptions } from '../../services/SubscriptionService.js'
  
   export default {
     name: 'CreatePostModal',
@@ -218,7 +218,7 @@
     },
 
     async mounted() {
-        let subscriptions = await getSubscriptions()
+        let subscriptions = await getAllSubscriptions()
         this.sports = subscriptions.data
     },
 

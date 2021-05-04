@@ -23,3 +23,7 @@ export function getPendingFriends() {
 export function getSentPendingFriends() {
     return http().get(`/api/friend/getSentPendingFriends`)
 }
+
+export function deleteFriend({ friendId }) {
+    return http().delete(`/api/friend/deleteFriend/${friendId}`)
+}

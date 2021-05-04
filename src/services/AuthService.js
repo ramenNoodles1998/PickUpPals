@@ -1,25 +1,18 @@
 import store from '../store'
 import { http } from './HttpService'
 import jwt from 'jsonwebtoken'
-import { getFriends } from './FriendService.js'
-
 export function isLoggedIn() {
     const token = localStorage.getItem('token')
     return token != null
 }
 
 export function login(user) {
-    getFriends()
-        .then((res) => {
-            store.state.friends = res.data
+    return http().post('/api/auth/login', user)
+        .then(res => {
+            if(res) {
+                setToken(res.data.token)
+            }
         })
-
-    return http().post('/api/auth', user)
-    .then(res => {
-        if(res) {
-            setToken(res.data.token)
-        }
-    })
 }
 
 function setToken(token) {
@@ -33,7 +26,7 @@ export function getToken() {
 
 export function logout() {
     localStorage.clear()
-    store.state.friends = []
+    store.dispatch('resetState')
     store.dispatch('authenticate')
 }
 
@@ -58,7 +51,7 @@ export function getUserId() {
 }
 
 export function registerUser(user) {
-    return http().post('/api/register', user)
+    return http().post('/api/register/signup', user)
 }
 
 function decodeToken() {

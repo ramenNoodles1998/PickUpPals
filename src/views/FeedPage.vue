@@ -84,28 +84,34 @@ import Posts from '../components/FeedComponents/Posts.vue'
 
     created() {
       this.socket = io(this.apiUrl)
-    },
 
-    async mounted() {
       this.getAllPosts()
       this.getPendingFriends()
       this.getSentPendingFriends()
+      this.getUserPosts()
       this.getFriends()
+      this.getGames()
 
-      this.socket.on(`friendPost/${this.userId}`, () => {
-        this.getAllPosts()
-      })
-      
-      this.socket.on(`decreaseSpot/${this.userId}`, () => {
-        this.getAllPosts()
-        this.getGames()
-      })
+    },
+
+    watch: {
+      userId(newId) {
+        this.socket.on(`friendPost/${newId}`, () => {
+          this.getAllPosts()
+        })
+        
+        this.socket.on(`updateFeed/${newId}`, () => {
+          this.getAllPosts()
+          this.getGames()
+          this.getUserPosts()
+        })
+      }
     },
 
     methods: {
       ...mapMutations(['addNewAllPost', 'decreasePost']),
 
-      ...mapActions(['getAllPosts', 'getPendingFriends', 'getSentPendingFriends', 'getFriends', 'getGames']),
+      ...mapActions(['getAllPosts', 'getPendingFriends', 'getSentPendingFriends', 'getFriends', 'getGames', 'getUserPosts']),
 
       sendPost(post) {
         this.openCreatePostModal = false

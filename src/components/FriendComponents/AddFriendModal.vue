@@ -7,11 +7,11 @@
       @click:outside="$emit('close')"
     >
       <v-card>
-        <v-card-title class="headline green white--text">
+        <v-card-title class="headline green font-weight-light white--text">
             Friend Request
         </v-card-title>
 
-        <v-card-text class="body-1 mt-2">
+        <v-card-text class="body-1 font-weight-light mt-2">
           {{ friend.username}} has sent you a friend request.
         </v-card-text>
 
@@ -27,7 +27,7 @@
 
             <v-btn
                 text
-                @click="$emit('decline', post)"
+                @click="sendFriendRequestDeclined()"
             >
                 Decline
             </v-btn>
@@ -75,6 +75,11 @@ import { mapState, mapActions } from 'vuex'
 
       sendFriendRequestAdded() {
         this.socket.emit('sendFriendRequestAdded', { userId: this.userId, friend: this.friend })
+        this.$emit('close')
+      },
+
+      sendFriendRequestDeclined() {
+        this.socket.emit('sendFriendRequestDeclined', { userId: this.userId, friend: this.friend })
         this.$emit('close')
       }
     }

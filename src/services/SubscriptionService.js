@@ -4,6 +4,10 @@ export function getSubscriptions() {
     return http().get('/api/subscriptions')
 }
 
+export function getAllSubscriptions() {
+    return http().get('/api/subscriptions/getAllSubscriptions')
+}
+
 export function getUserSubscriptions(userId) {
     return http().get(`/api/subscriptions/${userId}`)
 }

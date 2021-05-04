@@ -6,6 +6,7 @@
         <v-container fluid>
             <div class="d-flex flex-row-reverse">
                 <FriendList 
+                    v-if="friends.length > 0 || pendingFriends.length > 0 || sentPendingFriends.length > 0"
                     @open-friend-modal="(emitFriend) => $emit('open-friend-modal', emitFriend)"
                     :friends="friends"
                     :pendingFriends="pendingFriends"

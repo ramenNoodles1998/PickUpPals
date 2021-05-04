@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as auth from '../services/AuthService.js'
-import { getFriends, addPendingFriend, getPendingFriends, getSentPendingFriends } from '../services/FriendService.js'
+import { getFriends, addPendingFriend, getPendingFriends, getSentPendingFriends, deleteFriend } from '../services/FriendService.js'
 import { getUserPosts, getAllPosts, deletePost, editPost } from '../services/PostService.js'
 import { getGames, leaveGame } from '../services/GamesService.js'
 import { editAccount } from '../services/AccountService.js'
@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   state: {
     isLoggedIn: false,
     apiUrl: 'http://localhost:8080',
-    //apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com/',
+    //apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
     username: null,
     userId: null,
     friends: [],
@@ -24,6 +24,23 @@ const store = new Vuex.Store({
   },
 
   mutations: {
+    resetState(state) {
+      Object.assign(state, {
+        isLoggedIn: false,
+        apiUrl: 'http://localhost:8080',
+        socket: {},
+        //apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
+        username: null,
+        userId: null,
+        friends: [],
+        pendingFriends: [],
+        sentPendingFriends: [],
+        allPosts: [],
+        userPosts: [],
+        games: []
+      })
+    },
+
     authenticate(state) {
       state.isLoggedIn = auth.isLoggedIn()
       if(state.isLoggedIn) {
@@ -59,7 +76,7 @@ const store = new Vuex.Store({
     },
 
     setGamesData(state, { games }) {
-      state.games = games
+      state.games = games ? games : []
       state.games.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     },
 
@@ -91,6 +108,13 @@ const store = new Vuex.Store({
       state.userPosts.splice(postIds.indexOf(post._id), 1)
     },
 
+    removeFriend(state, { friend }) {
+      let friendIds = state.friends.map((friend) => {
+        return friend._id
+      })
+      state.friends.splice(friendIds.indexOf(friend._id), 1)
+    },
+
     editUserPost(state, { post }) {
       let postIds = state.userPosts.map((post) => {
         return post._id
@@ -103,6 +127,10 @@ const store = new Vuex.Store({
   actions: {
     authenticate(context) {
       context.commit('authenticate')
+    },
+
+    resetState(context) {
+      context.commit('resetState')
     },
 
     async getFriends({ commit }) {
@@ -170,7 +198,13 @@ const store = new Vuex.Store({
       let userData = await editAccount({ user })
 
       commit('setUserData', { user: userData.data })
-    }
+    },
+
+    async deleteFriendAction({ commit }, { friendId }) {
+      let friend = await deleteFriend({ friendId })
+
+      commit('removeFriend', { friend: friend.data })
+    },
   }
 })
 

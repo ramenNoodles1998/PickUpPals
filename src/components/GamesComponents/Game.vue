@@ -20,6 +20,7 @@
           </div>
 
           <v-btn
+            v-if="!hideExit"
             @click="leaveGame"
             icon
           >
@@ -79,7 +80,8 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
+  import io from 'socket.io-client'
 
   export default {
     name: 'Game',
@@ -92,13 +94,23 @@
           }
         },
 
-        directions: {
+        hideExit: {
           type: Boolean,
           default: false
         }
     },
 
+    data: () => ({
+      socket: {}
+    }),
+
+    created() {
+      this.socket = io(this.apiUrl)
+    },
+
     computed: {
+      ...mapState(['apiUrl']),
+
       dateTimeComputed() {
         return new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(new Date(this.game.dateTime))
       },
@@ -119,6 +131,7 @@
 
       leaveGame() {
         this.leaveGameAction({ gameId: this.game._id })
+        this.socket.emit('sendUpdateFeed', { post: this.game} )
       }
     }
   }

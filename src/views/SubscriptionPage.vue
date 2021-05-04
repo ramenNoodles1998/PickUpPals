@@ -109,6 +109,8 @@
       async addSubscription() {
         if (this.userSubscriptions.filter(s => s._id === this.selectedSubscription.item._id).length === 0) {
           await sub.addUserSubscription(this.userId, this.selectedSubscription.item._id)
+          let subscriptions = await sub.getSubscriptions()
+          this.subscriptions = subscriptions.data
           this.userSubscriptions.push(this.selectedSubscription.item)
           
         }
@@ -117,6 +119,8 @@
       async deleteSubscription(subscriptionId) {
         await sub.deleteUserSubscription(this.userId, subscriptionId)
         this.userSubscriptions.splice(this.userSubscriptions.indexOf(subscriptionId), 1)
+        let subscriptions = await sub.getSubscriptions()
+        this.subscriptions = subscriptions.data
       }
     },
 

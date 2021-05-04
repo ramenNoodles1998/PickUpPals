@@ -143,12 +143,12 @@
       this.socket = io(this.apiUrl)
     },
 
-    mounted() {
-      this.socket.on(`joinedGame/${this.userId}`, async ({ game }) => {
-        await this.getGames()
-        this.$router.push('/gamesPage')
-        this.socket.emit('decreaseSpots', { game })
-      })
+    watch: {
+      userId(newId) {
+        this.socket.on(`joinedGame/${newId}`, async () => {
+          await this.getGames()
+        })
+      }
     },
 
     computed: {
@@ -164,6 +164,7 @@
 
       joinPost() {
         this.socket.emit('joinGame', { userId: this.userId, post: this.post })
+        this.$router.push('/gamesPage')
       },
 
       deletePost() {
