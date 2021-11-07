@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   state: {
     isLoggedIn: false,
     //apiUrl: 'http://localhost:8080',
-    apiUrl: 'http://pupbackendapp.eba-purmsi37.us-east-1.elasticbeanstalk.com',
+    apiUrl: 'http://pupbackend.us-east-1.elasticbeanstalk.com',
     username: null,
     userId: null,
     friends: [],

@@ -9,7 +9,6 @@
       <div class="white--text">
         <strong>{{ message }}</strong>
       </div>
-
     </v-snackbar>
   </div>
 </template>
